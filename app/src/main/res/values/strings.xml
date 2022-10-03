@@ -5,4 +5,7 @@
     <string name="btnVerificationCode">Send Verification code</string>
     <string name="btnLogout">logout</string>
     <string name="btnVerifyNumber">Verify number</string>
+    <string name="btnFindUser">Find user</string>
+    <string name="tvNameItemUser">name</string>
+    <string name="tvPhoneItemUser">phone</string>
 </resources>

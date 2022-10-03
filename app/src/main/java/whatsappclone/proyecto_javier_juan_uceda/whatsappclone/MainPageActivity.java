@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainPageActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btnLogOut;
+    private Button btnLogOut, btnFindUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +25,8 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
     private void setUI() {
         btnLogOut = findViewById(R.id.logout);
         btnLogOut.setOnClickListener(this);
+        btnFindUser = findViewById(R.id.btnFindUser);
+        btnFindUser.setOnClickListener(this);
     }
 
     @Override
@@ -36,6 +38,9 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
+                break;
+            case R.id.btnFindUser:
+                startActivity(new Intent(this, FindUserActivity.class));
                 break;
         }
     }
