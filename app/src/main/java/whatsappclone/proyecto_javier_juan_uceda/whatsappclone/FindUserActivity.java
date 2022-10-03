@@ -47,10 +47,6 @@ public class FindUserActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isGreatherThan0(int columnIndex) {
-        return columnIndex >= 0;
-    }
-
     private void initializeRecyclerView() {
         mUserList = findViewById(R.id.rvUserList);
         mUserList.setNestedScrollingEnabled(false);

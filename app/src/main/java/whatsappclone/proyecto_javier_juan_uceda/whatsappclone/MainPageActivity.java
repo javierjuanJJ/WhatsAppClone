@@ -1,6 +1,8 @@
 package whatsappclone.proyecto_javier_juan_uceda.whatsappclone;
 
+import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +29,13 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         btnLogOut.setOnClickListener(this);
         btnFindUser = findViewById(R.id.btnFindUser);
         btnFindUser.setOnClickListener(this);
+        getPermissions();
+    }
+
+    private void getPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS}, 1);
+        }
     }
 
     @Override
