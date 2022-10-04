@@ -2,6 +2,7 @@ package whatsappclone.proyecto_javier_juan_uceda.whatsappclone;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +55,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         code = findViewById(R.id.code);
         send = findViewById(R.id.send);
 
+        phoneNumber.setInputType(InputType.TYPE_CLASS_PHONE);
+        code.setInputType(InputType.TYPE_CLASS_NUMBER);
+
         send.setOnClickListener(this);
 
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -102,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     userMap.put("name", user.getPhoneNumber());
                                     mUserDB.updateChildren(userMap);
                                 }
+                                usersInLoggedIn();
                             }
 
                             @Override

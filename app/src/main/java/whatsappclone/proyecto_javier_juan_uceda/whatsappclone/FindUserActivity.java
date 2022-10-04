@@ -4,10 +4,19 @@ import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -37,15 +46,55 @@ public class FindUserActivity extends AppCompatActivity {
     @SuppressLint("NotifyDataSetChanged")
     private void getContactList() {
         Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+        String ISOPrefix = getCountryISO();
         while (phones.moveToNext()) {
 
             @SuppressLint("Range") String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             @SuppressLint("Range") String phone = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
+            phone = phone.replace(" ", "");
+            phone = phone.replace("-", "");
+            phone = phone.replace("(", "");
+            phone = phone.replace(")", "");
+
+            if (!String.valueOf(phone.charAt(0)).equals("+"))
+                phone = ISOPrefix + phone;
             UserObject mContact = new UserObject(name, phone);
             contactsList.add(mContact);
             mUserListAdapter.notifyDataSetChanged();
+            getUserDetails(mContact);
         }
+    }
+
+    private void getUserDetails(UserObject mContact) {
+        DatabaseReference mUserID = FirebaseDatabase.getInstance().getReference().child("user");
+        Query query = mUserID.orderByChild("phone").equalTo(mContact.getPhone());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String phone = "",
+                            name = "";
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        if (childSnapshot.child("phone").getValue() != null)
+                            phone = childSnapshot.child("phone").getValue().toString();
+                        if (childSnapshot.child("name").getValue() != null)
+                            phone = childSnapshot.child("name").getValue().toString();
+
+
+                        UserObject mUser = new UserObject(name, phone);
+                        userList.add(mUser);
+                        mUserListAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     private void initializeRecyclerView() {
@@ -57,4 +106,21 @@ public class FindUserActivity extends AppCompatActivity {
         mUserListAdapter = new UserListAdapter(userList);
         mUserList.setAdapter(mUserListAdapter);
     }
+
+    private String getCountryISO() {
+        String iso = "";
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(getApplicationContext().TELEPHONY_SERVICE);
+            if (telephonyManager.getNetworkCountryIso() != null) {
+                if (telephonyManager.getNetworkCountryIso().toString().equals("")) {
+                    iso = telephonyManager.getNetworkCountryIso().toString();
+                }
+            }
+        }
+
+
+        return CountryToPhonePrefix.getPhone(iso);
+    }
+
 }
