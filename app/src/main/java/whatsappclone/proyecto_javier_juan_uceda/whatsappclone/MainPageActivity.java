@@ -48,9 +48,12 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         btnLogOut.setOnClickListener(this);
         btnFindUser = findViewById(R.id.btnFindUser);
         btnFindUser.setOnClickListener(this);
+
+
         getPermissions();
         initializeRecyclerView();
         getUserChatList();
+
     }
 
     private void getPermissions() {

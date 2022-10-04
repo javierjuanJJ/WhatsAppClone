@@ -3,6 +3,7 @@ package whatsappclone.proyecto_javier_juan_uceda.whatsappclone;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -93,7 +94,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    //usersInLoggedIn();
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if (user != null) {
                         final DatabaseReference mUserDB = FirebaseDatabase.getInstance().getReference().child("user").child(user.getUid());
@@ -123,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void usersInLoggedIn() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
+            Log.i("userOwn", "User " + user.getUid() + " with telephone " + user.getPhoneNumber());
             startActivity(new Intent(this, MainPageActivity.class));
             finish();
         }

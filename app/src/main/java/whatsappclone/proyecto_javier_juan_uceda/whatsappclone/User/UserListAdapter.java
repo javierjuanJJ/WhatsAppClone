@@ -45,6 +45,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
             public void onClick(View view) {
                 String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
 
+                assert key != null;
                 FirebaseDatabase.getInstance().getReference().child("user").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("chat").child(key).setValue(true);
                 FirebaseDatabase.getInstance().getReference().child("user").child(userList.get(position).getUid()).child("chat").child(key).setValue(true);
             }
