@@ -17,7 +17,7 @@ public class FindUserActivity extends AppCompatActivity {
     private RecyclerView.Adapter mUserListAdapter;
     private RecyclerView.LayoutManager mUserListLayoutManager;
 
-    ArrayList<UserObject> userList;
+    ArrayList<UserObject> userList, contactsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class FindUserActivity extends AppCompatActivity {
 
     private void setUI() {
         userList = new ArrayList<>();
+        contactsList = new ArrayList<>();
 
         initializeRecyclerView();
         getContactList();
@@ -42,7 +43,7 @@ public class FindUserActivity extends AppCompatActivity {
             @SuppressLint("Range") String phone = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
             UserObject mContact = new UserObject(name, phone);
-            userList.add(mContact);
+            contactsList.add(mContact);
             mUserListAdapter.notifyDataSetChanged();
         }
     }
