@@ -20,6 +20,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.User.UserListAdapter;
+import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.User.UserObject;
+import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.Utils.CountryToPhonePrefix;
+
 public class FindUserActivity extends AppCompatActivity {
 
     private RecyclerView mUserList;
@@ -59,7 +63,7 @@ public class FindUserActivity extends AppCompatActivity {
 
             if (!String.valueOf(phone.charAt(0)).equals("+"))
                 phone = ISOPrefix + phone;
-            UserObject mContact = new UserObject(name, phone);
+            UserObject mContact = new UserObject("", name, phone);
             contactsList.add(mContact);
             mUserListAdapter.notifyDataSetChanged();
             getUserDetails(mContact);
@@ -82,7 +86,7 @@ public class FindUserActivity extends AppCompatActivity {
                             name = childSnapshot.child("name").getValue().toString();
 
 
-                        UserObject mUser = new UserObject(name, phone);
+                        UserObject mUser = new UserObject(childSnapshot.getKey(), name, phone);
 
                         if (name.equals(phone)) {
                             for (UserObject mContactInterator :

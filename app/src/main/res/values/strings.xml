@@ -8,4 +8,5 @@
     <string name="btnFindUser">Find user</string>
     <string name="tvNameItemUser">name</string>
     <string name="tvPhoneItemUser">phone</string>
+    <string name="title">title</string>
 </resources>

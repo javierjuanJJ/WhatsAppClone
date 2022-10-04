@@ -1,4 +1,4 @@
-package whatsappclone.proyecto_javier_juan_uceda.whatsappclone;
+package whatsappclone.proyecto_javier_juan_uceda.whatsappclone.Utils;
 
 import java.util.HashMap;
 import java.util.Map;

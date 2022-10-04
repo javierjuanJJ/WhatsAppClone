@@ -1,13 +1,14 @@
-package whatsappclone.proyecto_javier_juan_uceda.whatsappclone;
+package whatsappclone.proyecto_javier_juan_uceda.whatsappclone.User;
 
 public class UserObject {
 
-    private String name,
+    private String uid, name,
             phone;
 
-    public UserObject(String name, String phone) {
+    public UserObject(String uid, String name, String phone) {
         this.name = name;
         this.phone = phone;
+        this.uid = uid;
     }
 
     public String getPhone() {
@@ -24,5 +25,13 @@ public class UserObject {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }

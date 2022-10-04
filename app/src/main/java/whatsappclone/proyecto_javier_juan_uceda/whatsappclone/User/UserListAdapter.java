@@ -1,16 +1,24 @@
-package whatsappclone.proyecto_javier_juan_uceda.whatsappclone;
+package whatsappclone.proyecto_javier_juan_uceda.whatsappclone.User;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
-class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserListViewHolder> {
+import java.util.ArrayList;
+import java.util.Objects;
+
+import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.R;
+
+public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserListViewHolder> {
     ArrayList<UserObject> userList;
 
     public UserListAdapter(ArrayList<UserObject> userList) {
@@ -29,9 +37,18 @@ class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserListViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UserListViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         holder.mName.setText(userList.get(position).getName());
         holder.mPhone.setText(userList.get(position).getPhone());
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
+
+                FirebaseDatabase.getInstance().getReference().child("user").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid())).child("chat").child(key).setValue(true);
+                FirebaseDatabase.getInstance().getReference().child("user").child(userList.get(position).getUid()).child("chat").child(key).setValue(true);
+            }
+        });
     }
 
     @Override
@@ -42,11 +59,12 @@ class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserListViewH
 
     public class UserListViewHolder extends RecyclerView.ViewHolder {
         public TextView mName, mPhone;
-
+        public LinearLayout linearLayout;
         public UserListViewHolder(View view) {
             super(view);
             mName = view.findViewById(R.id.name);
             mPhone = view.findViewById(R.id.phone);
+            linearLayout = view.findViewById(R.id.layout);
         }
     }
 }
