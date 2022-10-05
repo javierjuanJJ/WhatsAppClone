@@ -1,6 +1,8 @@
 package whatsappclone.proyecto_javier_juan_uceda.whatsappclone.Chat;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.ChatActivity;
 import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.R;
 
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.UserListViewHolder> {
-    ArrayList<ChatObject> userList;
+    ArrayList<ChatObject> chatList;
 
-    public ChatListAdapter(ArrayList<ChatObject> userList) {
-        this.userList = userList;
+    public ChatListAdapter(ArrayList<ChatObject> chatList) {
+        this.chatList = chatList;
     }
 
     @NonNull
@@ -34,18 +37,22 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.UserLi
 
     @Override
     public void onBindViewHolder(@NonNull UserListViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        holder.mTitle.setText(userList.get(position).getChatId());
+        holder.mTitle.setText(chatList.get(position).getChatId());
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(view.getContext(), ChatActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("chatID", chatList.get(holder.getAdapterPosition()).getChatId());
+                intent.putExtras(bundle);
+                view.getContext().startActivity(intent);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return userList.size();
+        return chatList.size();
     }
 
 
