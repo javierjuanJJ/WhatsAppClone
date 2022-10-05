@@ -15,22 +15,40 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:id="@+id/sendLayout">
 
-        <EditText
-            android:layout_weight="0.8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/message"
-            android:hint="@string/message" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mediaList" />
 
-        <Button
-            android:layout_weight="0.2"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/send" />
+            android:orientation="horizontal">
 
+            <EditText
+                android:layout_weight="0.8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/messageInput"
+                android:hint="@string/message" />
+
+            <Button
+                android:layout_weight="0.2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/add_media"
+                android:id="@+id/addMedia" />
+
+            <Button
+                android:layout_weight="0.2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/send"
+                android:id="@+id/send" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

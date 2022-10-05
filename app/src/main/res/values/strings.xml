@@ -9,5 +9,7 @@
     <string name="tvNameItemUser">name</string>
     <string name="tvPhoneItemUser">phone</string>
     <string name="title">title</string>
-    <string name="message">message...</string>
+    <string name="message">message…</string>
+    <string name="add_media">add media</string>
+    <string name="send">send</string>
 </resources>
