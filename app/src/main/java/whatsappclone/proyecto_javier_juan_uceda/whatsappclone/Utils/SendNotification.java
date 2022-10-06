@@ -10,9 +10,7 @@ import org.json.JSONObject;
 public class SendNotification {
     public static void SendNotification(String message, String receiver, String notificationKey) throws JSONException {
         Log.i("OneSignalExample", "notificationKey: " + notificationKey);
-        JSONObject jsonObject = new JSONObject("{'contents': {'en':'Test Message'}, 'include_player_ids': ['" + notificationKey + "']}");
-
-        //JSONObject jsonObject = new JSONObject("{ 'app_id':" + notificationKey + ", 'contents': {'en': '" + message + "'} ,'include_player_ids': ['" + notificationKey + "'] }");
+        JSONObject jsonObject = new JSONObject("{'contents': {'en':'" + message + "'}, 'include_player_ids': ['" + notificationKey + "']}");
 
         OneSignal.postNotification(jsonObject,
                 new OneSignal.PostNotificationResponseHandler() {

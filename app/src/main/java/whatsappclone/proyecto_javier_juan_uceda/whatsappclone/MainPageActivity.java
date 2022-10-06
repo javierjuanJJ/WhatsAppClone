@@ -4,12 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,8 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.onesignal.OSDeviceState;
-import com.onesignal.OSSubscriptionObserver;
-import com.onesignal.OSSubscriptionStateChanges;
 import com.onesignal.OneSignal;
 
 import org.json.JSONException;
@@ -34,11 +30,10 @@ import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.Chat.ChatListAdapt
 import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.Chat.ChatObject;
 import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.Utils.SendNotification;
 
-public class MainPageActivity extends AppCompatActivity implements View.OnClickListener, OSSubscriptionObserver {
+public class MainPageActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button btnLogOut, btnFindUser;
     private static final String ONESIGNAL_APP_ID = "d01f2fac-0fe4-40ee-96b1-9ca107d94da2";
-    //private static final String ONESIGNAL_APP_ID = "146ff33d-e6e5-474b-b688-416ad622c1b2";
 
     private RecyclerView mChatList;
     private RecyclerView.Adapter mChatListAdapter;
@@ -68,14 +63,11 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         OneSignal.pauseInAppMessages(true);
         OneSignal.setLocationShared(false);
 
-        //OneSignal.addSubscriptionObserver(this);
-
         // promptForPushNotifications will show the native Android notification permission prompt.
         // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 7)
         OneSignal.promptForPushNotifications();
 
         try {
-            //SendNotification.SendNotification("message 1", "heading 1", ONESIGNAL_APP_ID);
             SendNotification.SendNotification("message 1", "heading 1", userId);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -121,6 +113,9 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btnFindUser:
                 startActivity(new Intent(this, FindUserActivity.class));
                 break;
+            default:
+
+
         }
     }
 
@@ -163,19 +158,5 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
         mChatList.setLayoutManager(mChatListLayoutManager);
         mChatListAdapter = new ChatListAdapter(chatList);
         mChatList.setAdapter(mChatListAdapter);
-    }
-
-    @Override
-    public void onOSSubscriptionChanged(OSSubscriptionStateChanges osSubscriptionStateChanges) {
-        if (!osSubscriptionStateChanges.getFrom().isSubscribed() &&
-                osSubscriptionStateChanges.getTo().isSubscribed()) {
-            new AlertDialog.Builder(this)
-                    .setMessage("You've successfully subscribed to push notifications!")
-                    .show();
-            // get player ID
-            osSubscriptionStateChanges.getTo().getUserId();
-        }
-
-        Log.i("Debug", "onOSSubscriptionChanged: " + osSubscriptionStateChanges);
     }
 }
