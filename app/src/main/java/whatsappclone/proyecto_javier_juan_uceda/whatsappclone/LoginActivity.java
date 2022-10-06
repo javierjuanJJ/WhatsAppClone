@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(verificationId, forceResendingToken);
                 mVerificationId = verificationId;
-                code.setText(getString(R.string.btnVerifyNumber));
+                code.setHint(getString(R.string.btnVerifyNumber));
 
 
             }
