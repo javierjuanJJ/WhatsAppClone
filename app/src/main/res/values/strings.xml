@@ -12,4 +12,5 @@
     <string name="message">message…</string>
     <string name="add_media">add media</string>
     <string name="send">send</string>
+    <string name="view_media">view Media</string>
 </resources>

@@ -95,17 +95,26 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 if (snapshot.exists()) {
                     String messages = "";
                     String creatorId = "";
-
+                    ArrayList<String> mediaUriList = new ArrayList<>();
                     if (snapshot.child("text").getValue() != null) {
                         messages = snapshot.child("text").getValue().toString();
                     }
+
+
                     if (snapshot.child("creator").getValue() != null) {
                         creatorId = snapshot.child("creator").getValue().toString();
                     }
 
+                    if (snapshot.child("media").getChildrenCount() > 0) {
+                        for (DataSnapshot mediaSnapShot :
+                                snapshot.child("media").getChildren()) {
+                            mediaUriList.add(mediaSnapShot.getValue().toString());
+                        }
+                    }
+
                     Log.i("userOwn", String.format("Message key: %s by creator %s with message %s", snapshot.getKey(), creatorId, messages));
 
-                    MessageObject mMesage = new MessageObject(snapshot.getKey(), creatorId, messages);
+                    MessageObject mMesage = new MessageObject(snapshot.getKey(), creatorId, messages, mediaUriList);
                     messageList.add(mMesage);
                     mChatLayoutManager.scrollToPosition(messageList.size() - 1);
                     mChatAdapter.notifyDataSetChanged();

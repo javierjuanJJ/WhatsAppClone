@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,6 +45,9 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void setUI() {
+
+        Fresco.initialize(this);
+
         btnLogOut = findViewById(R.id.logout);
         btnLogOut.setOnClickListener(this);
         btnFindUser = findViewById(R.id.btnFindUser);
