@@ -2,7 +2,6 @@ package whatsappclone.proyecto_javier_juan_uceda.whatsappclone.Chat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +41,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.UserLi
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ChatActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("chatID", chatList.get(holder.getAdapterPosition()).getChatId());
-                intent.putExtras(bundle);
+                intent.putExtra("chatObject", chatList.get(holder.getAdapterPosition()));
                 view.getContext().startActivity(intent);
             }
         });

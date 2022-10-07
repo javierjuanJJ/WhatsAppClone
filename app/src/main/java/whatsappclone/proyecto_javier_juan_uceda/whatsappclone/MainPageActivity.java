@@ -22,13 +22,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.onesignal.OSDeviceState;
 import com.onesignal.OneSignal;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 
 import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.Chat.ChatListAdapter;
 import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.Chat.ChatObject;
-import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.Utils.SendNotification;
+import whatsappclone.proyecto_javier_juan_uceda.whatsappclone.User.UserObject;
 
 public class MainPageActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -59,19 +57,13 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
 
         FirebaseDatabase.getInstance().getReference().child("user").child(FirebaseAuth.getInstance().getUid()).child("notificationKey").setValue(userId);
 
-        OneSignal.unsubscribeWhenNotificationsAreDisabled(true);
-        OneSignal.pauseInAppMessages(true);
-        OneSignal.setLocationShared(false);
+//        OneSignal.unsubscribeWhenNotificationsAreDisabled(true);
+//        OneSignal.pauseInAppMessages(true);
+//        OneSignal.setLocationShared(false);
 
         // promptForPushNotifications will show the native Android notification permission prompt.
         // We recommend removing the following code and instead using an In-App Message to prompt for notification permission (See step 7)
         OneSignal.promptForPushNotifications();
-
-        try {
-            SendNotification.SendNotification("message 1", "heading 1", userId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         setUI();
 
@@ -103,7 +95,7 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.logout:
-                OneSignal.disablePush(true);
+
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -137,6 +129,7 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
                         if (exists)
                             continue;
                         chatList.add(mChat);
+                        getChatData(mChat.getChatId());
                         mChatListAdapter.notifyDataSetChanged();
                     }
                 }
@@ -144,6 +137,71 @@ public class MainPageActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getChatData(String chatId) {
+        DatabaseReference mChatDB = FirebaseDatabase.getInstance().getReference().child("chat").child(chatId).child("info");
+        mChatDB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String chatId = "";
+
+                    if (snapshot.child("id").getValue() != null) {
+                        chatId = snapshot.child("id").getValue().toString();
+                    }
+
+                    for (DataSnapshot userSnapshot :
+                            snapshot.child("users").getChildren()) {
+                        for (ChatObject mChat :
+                                chatList) {
+                            if (mChat.getChatId().equals(chatId)) {
+                                UserObject mUser = new UserObject(userSnapshot.getKey());
+                                mChat.addUserToArrayList(mUser);
+                                getUserData(mUser);
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void getUserData(UserObject mUser) {
+        DatabaseReference mUserDb = FirebaseDatabase.getInstance().getReference().child("user").child(mUser.getUid());
+        mUserDb.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserObject mUser = new UserObject(snapshot.getKey());
+
+                if (snapshot.child("notificationKey").getValue() != null) {
+                    mUser.setNotificationKey(snapshot.child("notificationKey").getValue().toString());
+                }
+
+                for (ChatObject mChat :
+                        chatList) {
+                    for (UserObject mUserIterator :
+                            mChat.getUserObjectArrayList()) {
+                        if (mUserIterator.getUid().equals(mUser.getUid())) {
+                            mUserIterator.setNotificationKey(mUser.getNotificationKey());
+                        }
+
+                        mChatListAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

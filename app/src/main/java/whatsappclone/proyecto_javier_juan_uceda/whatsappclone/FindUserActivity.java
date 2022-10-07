@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +46,8 @@ public class FindUserActivity extends AppCompatActivity {
 
         initializeRecyclerView();
         getContactList();
+
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -56,13 +59,17 @@ public class FindUserActivity extends AppCompatActivity {
             @SuppressLint("Range") String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             @SuppressLint("Range") String phone = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
+            Log.i("phoneNumberBefore", "name: " + name + " with phone: " + phone);
+
             phone = phone.replace(" ", "");
             phone = phone.replace("-", "");
             phone = phone.replace("(", "");
             phone = phone.replace(")", "");
 
             if (!String.valueOf(phone.charAt(0)).equals("+"))
-                phone = ISOPrefix + phone;
+                phone = "+34" + phone;
+            //phone = ISOPrefix + phone;
+            Log.i("phoneNumberNext", "name: " + name + " with phone: " + phone);
             UserObject mContact = new UserObject("", name, phone);
             contactsList.add(mContact);
             mUserListAdapter.notifyDataSetChanged();
