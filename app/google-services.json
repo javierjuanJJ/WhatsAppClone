@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "235693386717",
+    "firebase_url": "https://whatsappclone-adba9-default-rtdb.firebaseio.com",
     "project_id": "whatsappclone-adba9",
     "storage_bucket": "whatsappclone-adba9.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "235693386717-knddb9nv666c3qlvv1mntsqa5mjrbsar.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "whatsappclone.proyecto_javier_juan_uceda.whatsappclone",
+            "certificate_hash": "d856537376d0cfc4f402ab00d7c23e6224223d00"
+          }
+        },
         {
           "client_id": "235693386717-gomae6gvp52eplcqpu48grie8ic01u8p.apps.googleusercontent.com",
           "client_type": 3

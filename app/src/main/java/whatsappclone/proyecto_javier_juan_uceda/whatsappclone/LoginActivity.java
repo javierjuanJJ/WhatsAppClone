@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-
+                Toast.makeText(LoginActivity.this, String.format(getString(R.string.errorFirebaseVerification), e.getMessage()), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -77,8 +79,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 super.onCodeSent(verificationId, forceResendingToken);
                 mVerificationId = verificationId;
                 code.setHint(getString(R.string.btnVerifyNumber));
-
-
             }
         };
 
@@ -145,12 +145,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void startPhoneNumberVerification() {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber.getText().toString(),
-                60,
-                TimeUnit.SECONDS,
-                this,
-                mCallbacks
-        );
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
+                        .setPhoneNumber(phoneNumber.getText().toString())       // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(this)                 // Activity (for callback binding)
+                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
     }
 }
