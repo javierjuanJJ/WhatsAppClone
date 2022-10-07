@@ -13,4 +13,5 @@
     <string name="add_media">add media</string>
     <string name="send">send</string>
     <string name="view_media">view Media</string>
+    <string name="create_chat_room">Create Chat Room</string>
 </resources>
