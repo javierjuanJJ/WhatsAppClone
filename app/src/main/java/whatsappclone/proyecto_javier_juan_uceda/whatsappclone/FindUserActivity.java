@@ -75,8 +75,9 @@ public class FindUserActivity extends AppCompatActivity implements View.OnClickL
             phone = phone.replace(")", "");
 
             if (!String.valueOf(phone.charAt(0)).equals("+"))
-                phone = "+34" + phone;
-            //phone = ISOPrefix + phone;
+                phone = ISOPrefix + phone;
+
+            //phone = "+34" + phone;
             Log.i("phoneNumberNext", "name: " + name + " with phone: " + phone);
             UserObject mContact = new UserObject("", name, phone);
             contactsList.add(mContact);
