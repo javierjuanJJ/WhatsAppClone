@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">WhatsAppClone</string>
+    <string name="etPhoneNumber">Enter Phone Number</string>
+    <string name="etCode">Enter Code</string>
+    <string name="btnVerificationCode">Send Verification code</string>
+    <string name="btnLogout">logout</string>
+    <string name="btnVerifyNumber">Verify number</string>
+    <string name="btnFindUser">Find user</string>
+    <string name="tvNameItemUser">name</string>
+    <string name="tvPhoneItemUser">phone</string>
+    <string name="title">title</string>
+    <string name="message">message…</string>
+    <string name="add_media">add media</string>
+    <string name="send">send</string>
+    <string name="view_media">view Media</string>
+    <string name="create_chat_room">Create Chat Room</string>
+    <string name="errorFirebaseVerification">Error verification %s</string>
+</resources>

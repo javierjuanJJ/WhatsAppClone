@@ -27,8 +27,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
-import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +38,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button send;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private String mVerificationId;
-    private SmsVerifyCatcher smsVerifyCatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,19 +81,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 code.setHint(getString(R.string.btnVerifyNumber));
             }
         };
-
-        smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
-            @Override
-            public void onSmsCatch(String message) {
-                String codeText = parseCode(message);//Parse verification code
-                code.setText(codeText);//set code in edit text
-
-                //then you can send verification code to server
-                verifyPhoneNumberWithCode();
-            }
-        });
-
-        smsVerifyCatcher.setPhoneNumberFilter("CloudOTP");
 
     }
 
@@ -169,33 +153,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
-
     }
-
-    private String parseCode(String message) {
-        return message.split(" ")[0];
-    }
-
-    /**
-     * need for Android 6 real time permissions
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        smsVerifyCatcher.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        smsVerifyCatcher.onStop();
-    }
-
-
 }
